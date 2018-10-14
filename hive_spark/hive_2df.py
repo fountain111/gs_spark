@@ -5,18 +5,25 @@ from pyspark.sql import SparkSession
 
 class Hive_2df():
     def __init__(self,configs):
+        self.dataframes = {}
         spark = SparkSession \
             .builder \
-            .appName("Python Spark SQL Hive integration example") \
+            .appName("Python Spark SQL Hive integration for clean data") \
             .enableHiveSupport() \
             .getOrCreate()
         database = configs['database']
-        dataframes={}
-        limit = 10000
+        limit = 'limit 1000'
         for table in configs:
-            dataframes[table] = spark.sql("select * from {database}.{table} {limit}".format(database=database,table=table,limit=limit))
+            if table == 'database':
+                continue
+            else:
+                sql = "select * from {database}.{table} {limit}".format(database=database,table=table,limit=limit)
+                print(sql)
+                self.dataframes[table] = spark.sql(sql)
 
-        return dataframes
+                #self.dataframes[table].show()
+                print(self.dataframes[table])
+
 
 def main():
     pass

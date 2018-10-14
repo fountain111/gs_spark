@@ -1,6 +1,10 @@
+from pyspark import SparkContext, SparkConf
 
 
-from pyspark.sql import HiveContext
+import config.config_default as config
+def main():
 
+
+    config.main()
 if __name__ == '__main__':
-
+    main()

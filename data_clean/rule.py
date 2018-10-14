@@ -8,21 +8,24 @@ class Clean_Rule():
         :param configs:
         '''
         list_ = []
-        hive_df = Hive_2df(configs=configs)
+        hive = Hive_2df(configs=configs)
+        hive_df = hive.dataframes
         database = configs['database']
-        for dataset, rules in configs.keys():
+        for dataset, rules in configs.items():
             if dataset =='database':
-                pass
+                continue
             else:
                 df = hive_df[dataset]# 数据库格式转到df,或者干脆不转,看到时候测试谁快
-                for row_or_col,rule in rules.items():
+                for row_or_col,rule_list in rules.items():
                     if row_or_col=='row':
-                        for record in df:# 一行行读取,rule是apply到行的,如果是apply到列的,需要重写一下
-                            for rule in rules:
-                                record = self.rule(record)
+                        for record in df:# 一行行读取,rule是apply到行的
+                            for rule in rule_list:
+                                #print(rule)
+                                #print(record)
+                                record = rule(record)
                         list_.append(record)
                     elif row_or_col=='column':
-                        pass
+                        continue
 
 
 
@@ -57,7 +60,7 @@ class Clean_Rule():
         return 0, record['C_CARD_LICENSE'][0:10], record['C_EX_LICENSE'][0:10]
 
     def date(self,record):
-        print(record)
+        #print(record)
         pass
 
 
