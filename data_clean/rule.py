@@ -15,10 +15,11 @@ class Clean_Rule():
             if dataset =='database':
                 continue
             else:
-                df = hive_df[dataset]# 数据库格式转到df,或者干脆不转,看到时候测试谁快
+                df = hive_df[dataset] #get a dataframe
+                row_collects = df.collect()
                 for row_or_col,rule_list in rules.items():
                     if row_or_col=='row':
-                        for record in df:# 一行行读取,rule是apply到行的
+                        for record in row_collects:# 一行行读取,rule是apply到行的
                             for rule in rule_list:
                                 #print(rule)
                                 #print(record)

@@ -23,6 +23,7 @@ class Hive_2df():
 
                 #self.dataframes[table].show()
                 print(self.dataframes[table])
+        spark.stop()
 
 
 def main():
