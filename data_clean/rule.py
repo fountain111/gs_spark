@@ -1,5 +1,18 @@
 from hive_spark.hive_2df import *
+from pyspark.sql import SparkSession
+from pyspark import SparkContext, SparkConf
+from pyspark.sql.functions import udf
+
+
+
+
 class Clean_Rule():
+
+    def __init__(self):
+        # angle_av = udf(lambda (x, y): -10 if x == 0 else math.atan2(y / x) * 180 / np.pi, DecimalType(20, 10))
+
+        self.compare_license = udf (lambda x,y:0 if x == y else 1)
+
     def _init(self,configs):
         '''
 
@@ -9,56 +22,38 @@ class Clean_Rule():
         '''
         list_ = []
         hive = Hive_2df(configs=configs)
-        hive_df = hive.dataframes
         database = configs['database']
         for dataset, rules in configs.items():
             if dataset =='database':
                 continue
             else:
-                df = hive_df[dataset] #get a dataframe
-                row_collects = df.collect()
                 for row_or_col,rule_list in rules.items():
                     if row_or_col=='row':
-                        for record in row_collects:# 一行行读取,rule是apply到行的
-                            for rule in rule_list:
-                                #print(rule)
-                                #print(record)
-                                record = rule(record)
-                        list_.append(record)
+                        for rule in rule_list:
+                            print('rule',rule)
+                            df = hive.dataframes[dataset]
+                            df.withColumn('same_licnese',self.compare_license(df.c_card_license,df.c_ex_license)).select('c_card_license','c_ex_license','same_licnese').show()
+
                     elif row_or_col=='column':
                         continue
 
-
+        hive.spark.stop()
 
         return list_
 
+    def test_print(self,x):
+        print(x)
 
-    def license(self, record):
+
+    def _compare_license(self, record):
+        # 出入口车牌不同标记位,相同标记为1,不同标记为0
+
         # return 1:same,0:not same,进出口车牌，如四位相同即判定是同一张车牌 ,None:这个label不需要
-
-        drop_license = ['浙A00000', '浙A11111', '浙A12345', '赣555555', '沪222222', '浙A000DD', '浙A000DD']
-
-        if record['C_CARD_LICENSE'][0:7] in drop_license:
-            return None
-        if record['C_EX_LICENSE'][0:7] in drop_license:
-            return None
-        en_licnese = record['C_CARD_LICENSE'][2:7]
-        ex_license = record['C_EX_LICENSE'][2:7]
-
-        positions = ((0, 1, 2, 3), (1, 2, 3, 4), (0, 2, 3, 4), (0, 1, 3, 4), (0, 1, 2, 4))
-        if en_licnese != ex_license:
-            for pos in positions:
-                same_pos = 0
-                for index in pos:
-                    if en_licnese[index] == ex_license[index]:
-                        same_pos += 1
-                if same_pos == 4:
-                    # print(en_licnese,ex_license)
-                    return 0, record['C_CARD_LICENSE'][0:10], record['C_EX_LICENSE'][0:10]
-
-            return 1, record['C_CARD_LICENSE'][0:10], record['C_EX_LICENSE'][0:10]
-
-        return 0, record['C_CARD_LICENSE'][0:10], record['C_EX_LICENSE'][0:10]
+        if record['c_card_license'] == record['c_ex_license']:
+            return 1
+        else:
+            return 0
+        return
 
     def date(self,record):
         #print(record)

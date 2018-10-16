@@ -1,32 +1,35 @@
-from pyspark import SparkConf, SparkContext
-from pyspark.sql import HiveContext
 from pyspark.sql import SparkSession
+from pyspark import SparkContext, SparkConf
+
 
 
 class Hive_2df():
     def __init__(self,configs):
         self.dataframes = {}
-        spark = SparkSession \
+
+        self.spark = SparkSession \
             .builder \
             .appName("Python Spark SQL Hive integration for clean data") \
             .enableHiveSupport() \
             .getOrCreate()
+        #self.conf = SparkConf()
+        #self.sc = SparkContext(conf=self.conf)
+
         database = configs['database']
-        limit = 'limit 1000'
+        limit = 'limit 2'
         for table in configs:
             if table == 'database':
                 continue
             else:
                 sql = "select * from {database}.{table} {limit}".format(database=database,table=table,limit=limit)
                 print(sql)
-                self.dataframes[table] = spark.sql(sql)
+                self.dataframes[table] = self.spark.sql(sql)
 
-                #self.dataframes[table].show()
-                print(self.dataframes[table])
-        spark.stop()
 
 
 def main():
+
+
     pass
 
 

@@ -17,7 +17,7 @@ def main():
         #  | wt_fare_tx
         'database': 'service_system_db',
 
-        'axis_jour': {'row': [rule.date,], 'column': [rule.date,]}
+        'exit_jour': {'row': [rule.compare_license,], 'column': []}
 
          ,
         # 'B':rule.date
@@ -28,5 +28,6 @@ def main():
     pass
 
 if __name__ == '__main__':
+    #sc = SparkContext(appName="CollectFemaleInfo")?
 
     main()

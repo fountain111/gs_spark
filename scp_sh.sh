@@ -4,7 +4,7 @@ set server_user "root"
 set password "cxxt@123"
 
 set local_root "./"
-set server_root "~/project/"
+set server_root "~/project/gs_spark/"
 
 spawn scp -r $local_root $server_user@$server_host:$server_root
 
