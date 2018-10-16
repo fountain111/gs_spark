@@ -1,6 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark import SparkContext, SparkConf
-
+#from pyspark import SparkContext, SparkConf
 
 
 class Hive_2df():
@@ -16,7 +15,7 @@ class Hive_2df():
         #self.sc = SparkContext(conf=self.conf)
 
         database = configs['database']
-        limit = 'limit 2'
+        limit = 'limit 10'
         for table in configs:
             if table == 'database':
                 continue
@@ -24,12 +23,17 @@ class Hive_2df():
                 sql = "select * from {database}.{table} {limit}".format(database=database,table=table,limit=limit)
                 print(sql)
                 self.dataframes[table] = self.spark.sql(sql)
+                #df = self.spark.sql(sql)
+                #df.show()
 
 
+    def f(self,x):
+        print(x)
+        return
+    def test(self):
+        self.dataframes['exit_jour'].rdd.foreach(self.f)
 
 def main():
-
-
     pass
 
 

@@ -15,9 +15,9 @@ def main():
         #  | entry_jour  |
         #  | exit_jour   |
         #  | wt_fare_tx
-        'database': 'service_system_db',
+        'database':'service_system_db',
 
-        'exit_jour': {'row': [rule.compare_license,], 'column': []}
+        'axis_jour': {'row': [rule.date,], 'column': [rule.date,]}
 
          ,
         # 'B':rule.date
