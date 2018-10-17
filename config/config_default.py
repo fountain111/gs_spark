@@ -17,7 +17,9 @@ def main():
         #  | wt_fare_tx
         'database':'service_system_db',
 
-        'axis_jour': {'row': [rule.date,], 'column': [rule.date,]}
+        'axis_jour': {'row': [rule.date,], 'column': [rule.date,]},
+
+        #'date':{'20180601','20180631'}
 
          ,
         # 'B':rule.date
