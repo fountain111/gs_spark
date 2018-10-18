@@ -18,10 +18,11 @@ def main():
         'database':'service_system_db',
 
         'axis_jour': {'row': [rule.date,], 'column': [rule.date,]},
-
+        #月份
         #'date':{'20180601','20180631'}
 
-         ,
+        #行为或属性
+
         # 'B':rule.date
 
     }
