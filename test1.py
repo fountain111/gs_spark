@@ -16,10 +16,17 @@ sql = "select * from {database}.{table} where n_ex_date < \
 new_column_1 = expr(
     """IF(c_ex_license != c_card_license, 1, 0)"""
 )
+
+new_license_color = expr(
+    """ c_en_license+c_en_color"""
+)
+
 print(sql)
 df = spark.sql(sql)
+df.select
 df = df.withColumn("same_license", new_column_1)
-df.select('same_license','c_card_license','c_ex_license').show()
+
+#df.select('same_license','c_card_license','c_ex_license').show()
 
 df.groupBy("c_ex_license").agg(func.sum("same_license")).show()
 

@@ -13,11 +13,11 @@ class Hive_2df():
             .getOrCreate()
         #self.conf = SparkConf()
         #self.sc = SparkContext(conf=self.conf)
-
-        database = configs['database']
+        print(self.spark)
+        database = configs['database_name']
         limit = 'limit 10'
         for table in configs:
-            if table == 'database':
+            if table != 'table_name':
                 continue
             else:
                 sql = "select * from {database}.{table} {limit}".format(database=database,table=table,limit=limit)

@@ -15,17 +15,21 @@ def main():
         #  | entry_jour  |
         #  | exit_jour   |
         #  | wt_fare_tx
-        'database':'service_system_db',
-
-        'axis_jour': {'row': [rule.date,], 'column': [rule.date,]},
-        #月份
-        #'date':{'20180601','20180631'}
-
-        #行为或属性
-
-        # 'B':rule.date
-
+        {'database_name':'service_system_db'},
+        {'table_name':'exit_entry_jour'},
+        {'dada_range':('20180601','20180631')},
+        {'rules':{'row':[rule.test_print,],'column':()}}
     }
+
+
+
+
+
+
+
+
+
+
     rule._init(configs=configs)
 
     pass
